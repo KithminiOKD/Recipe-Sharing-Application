@@ -19,32 +19,32 @@ type TabParamList = {
   Profile: undefined;
 };
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabParamList>();
 const DiscoverStack = createNativeStackNavigator();
 const MealPlanStack = createNativeStackNavigator();
 const CommunityStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 const DiscoverStackScreen = () => (
-  <DiscoverStack.Navigator>
+  <DiscoverStack.Navigator screenOptions={{headerShown: false}}>
     <DiscoverStack.Screen name="Home" component={HomeScreen} />
   </DiscoverStack.Navigator>
 );
 
 const MealPlanStackScreen = () => (
-  <MealPlanStack.Navigator>
+  <MealPlanStack.Navigator screenOptions={{headerShown: false}}>
     <MealPlanStack.Screen name="MealPlans" component={MealPlansScreen} />
   </MealPlanStack.Navigator>
 );
 
 const CommunityStackScreen = () => (
-  <CommunityStack.Navigator>
+  <CommunityStack.Navigator screenOptions={{headerShown: false}}>
     <CommunityStack.Screen name="Community" component={CommunityScreen} />
   </CommunityStack.Navigator>
 );
 
 const AuthStackScreen = () => (
-  <AuthStack.Navigator>
+  <AuthStack.Navigator screenOptions={{headerShown: false}}>
     <AuthStack.Screen name="Profile" component={ProfileScreen} />
   </AuthStack.Navigator>
 );
@@ -52,43 +52,32 @@ const AuthStackScreen = () => (
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({
-        route,
-      }: {
-        route: RouteProp<TabParamList, keyof TabParamList>;
-      }) => {
-        const getIconName = (routeName: String, focused: boolean) => {
-          if (routeName == 'Discover') {
+      screenOptions={({ route }) => {
+        const getIconName = (routeName: string, focused: boolean) => {
+          if (routeName === 'Discover') {
             return focused ? 'search' : 'search-outline';
-          } else if (routeName == 'Community') {
+          } else if (routeName === 'Community') {
             return focused ? 'people' : 'people-outline';
-          } else if (routeName == 'MealPlans') {
+          } else if (routeName === 'MealPlans') {
             return focused ? 'calendar' : 'calendar-outline';
-          } else if (routeName == 'Profile') {
+          } else if (routeName === 'Profile') {
             return focused ? 'person' : 'person-outline';
           }
           return 'help';
         };
+
         const options: BottomTabNavigationOptions = {
-          tabBarIcon: ({
-            focused,
-            color,
-            size,
-          }: {
-            focused: boolean;
-            color: String;
-            size: number;
-          }) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = getIconName(route.name, focused);
             return <Icon name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#007AFF',
+          tabBarActiveTintColor: '#ee00ffff',
           tabBarInactiveTintColor: '#666',
           headerShown: false,
         };
+
         return options;
-      }}
-    >
+      }}>
       <Tab.Screen name="Discover" component={DiscoverStackScreen} />
       <Tab.Screen name="Community" component={CommunityStackScreen} />
       <Tab.Screen name="MealPlans" component={MealPlanStackScreen} />
