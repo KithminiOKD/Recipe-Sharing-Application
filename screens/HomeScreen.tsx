@@ -33,7 +33,7 @@ const HomeScreen = () => {
           {
             params: {
               apiKey: '3b743256e59f4613bc9580268e2a0b78',
-              cuisine: 'indian',
+              cuisine: 'Italian',
               number: 10,
               addRecipeInformation: true,
             },
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#68006dff',
   },
   subtitle: {
     fontSize: 16,
