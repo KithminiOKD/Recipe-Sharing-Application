@@ -11,6 +11,7 @@ import CommunityScreen from '../screens/CommunityScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { RouteProp } from '@react-navigation/native';
 import Icon from '@react-native-vector-icons/ionicons';
+import DishDetailScreen from '../screens/DishDetailScreen';
 
 type TabParamList = {
   Discover: undefined;
@@ -28,6 +29,7 @@ const AuthStack = createNativeStackNavigator();
 const DiscoverStackScreen = () => (
   <DiscoverStack.Navigator screenOptions={{headerShown: false}}>
     <DiscoverStack.Screen name="Home" component={HomeScreen} />
+    <DiscoverStack.Screen name="Detail" component={DishDetailScreen} />
   </DiscoverStack.Navigator>
 );
 
