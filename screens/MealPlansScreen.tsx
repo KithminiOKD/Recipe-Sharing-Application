@@ -6,16 +6,16 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 const MealPlansScreen = () => {
-const navigation = useNavigation();
+  const navigation = useNavigation();
   const [mealPlans, setMealPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-useEffect(() => {
+  useEffect(() => {
     const fetchMealPlans = async () => {
       try {
         const response = await axios.get(
@@ -82,9 +82,9 @@ useEffect(() => {
 
   const handleMealPress = (
     planName: string,
-    recipes: {id: number; title: string; image: string}[],
+    recipes: { id: number; title: string; image: string }[],
   ) => {
-    navigation.navigate('MealPlanDetail', {planName, recipes});
+    navigation.navigate('MealPlanDetail', { planName, recipes });
   };
 
   return (
@@ -129,17 +129,19 @@ useEffect(() => {
           paddingHorizontal: 15,
           color: '#333',
           marginBottom: 15,
-        }}>
+        }}
+      >
         Tasty Meal Plans
       </Text>
       {mealPlans?.map((plan: any, index: number) => (
         <TouchableOpacity
           onPress={() => handleMealPress(plan.name, plan.recipes)}
           key={index}
-          style={styles.planCard}>
+          style={styles.planCard}
+        >
           <Image
             style={styles.planImage}
-            source={{uri: plan.recipes[0].image}}
+            source={{ uri: plan.recipes[0].image }}
           />
 
           <View style={styles.planInfo}>
@@ -154,10 +156,10 @@ useEffect(() => {
         </Text>
       </TouchableOpacity>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default MealPlansScreen
+export default MealPlansScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 10,
   },
-  recipesBadgeText: {color: '#fff', fontWeight: 'bold', fontSize: 12},
+  recipesBadgeText: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
   planCard: {
     flexDirection: 'row',
     padding: 15,
@@ -257,4 +259,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-})
+});
