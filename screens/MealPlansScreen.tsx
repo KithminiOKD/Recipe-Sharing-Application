@@ -11,11 +11,149 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 
 const MealPlansScreen = () => {
+const navigation = useNavigation();
+  const [mealPlans, setMealPlans] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+    const fetchMealPlans = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.spoonacular.com/recipes/complexSearch',
+          {
+            params: {
+              apiKey: '3b743256e59f4613bc9580268e2a0b78',
+              number: 20,
+              addRecipeInformation: true,
+            },
+          },
+        );
+
+        const recipes = response.data.results;
+
+        const plans = [
+          {
+            name: 'Focus on Fiber',
+            recipes: recipes.slice(0, 4).map((r: any) => ({
+              id: r.id,
+              title: r.title,
+              image: r.image,
+            })),
+          },
+
+          {
+            name: 'Spring Holidays Made Simple',
+            recipes: recipes.slice(4, 7).map((r: any) => ({
+              id: r.id,
+              title: r.title,
+              image: r.image,
+            })),
+          },
+
+          {
+            name: 'One Pot No-Stress Cooking',
+            recipes: recipes.slice(7, 11).map((r: any) => ({
+              id: r.id,
+              title: r.title,
+              image: r.image,
+            })),
+          },
+
+          {
+            name: 'More Meal Plans',
+            recipes: recipes.slice(11, 13).map((r: any) => ({
+              id: r.id,
+              title: r.title,
+              image: r.image,
+            })),
+          },
+        ];
+
+        setMealPlans(plans);
+      } catch (error) {
+        console.log('Error', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMealPlans();
+  }, []);
+
+  const handleMealPress = (
+    planName: string,
+    recipes: {id: number; title: string; image: string}[],
+  ) => {
+    navigation.navigate('MealPlanDetail', {planName, recipes});
+  };
 
   return (
-    <View>
-      <Text>MealPlansScreenaaa</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          source={{
+            uri: 'https://cdn-icons-png.flaticon.com/128/1065/1065715.png',
+          }}
+          style={styles.headerImage}
+        />
+        <View style={styles.headerText}>
+          <Text style={styles.unlockText}>Unlock all of Meal Plans</Text>
+          <Text style={styles.subText}>
+            Create your own plans and see the full library of Tasty plans with
+            Tasty +
+          </Text>
+        </View>
+      </View>
+      <View style={styles.collageContainer}>
+        <Image
+          source={{
+            uri: 'https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=1200',
+          }}
+          style={styles.collageImage}
+        />
+        <Image
+          source={{
+            uri: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1200',
+          }}
+          style={styles.collageImage}
+        />
+        <View style={styles.recipesBadge}>
+          <Text style={styles.recipesBadgeText}>4 recipes</Text>
+        </View>
+      </View>
+
+      <Text
+        style={{
+          fontSize: 26,
+          fontWeight: 'bold',
+          paddingHorizontal: 15,
+          color: '#333',
+          marginBottom: 15,
+        }}>
+        Tasty Meal Plans
+      </Text>
+      {mealPlans?.map((plan: any, index: number) => (
+        <TouchableOpacity
+          onPress={() => handleMealPress(plan.name, plan.recipes)}
+          key={index}
+          style={styles.planCard}>
+          <Image
+            style={styles.planImage}
+            source={{uri: plan.recipes[0].image}}
+          />
+
+          <View style={styles.planInfo}>
+            <Text style={styles.planName}>{plan.name}</Text>
+            <Text style={styles.planCount}>{plan.recipes.length} recipes</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+      <TouchableOpacity style={styles.startButton}>
+        <Text style={styles.startButtonText}>
+          Start meal plan with these recipes
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
   )
 }
 
@@ -70,7 +208,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    backgroundColor: '#ffd700',
+    backgroundColor: '#68006dff',
     paddingVertical: 3,
     paddingHorizontal: 8,
     borderRadius: 10,
@@ -106,7 +244,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   startButton: {
-    backgroundColor: '#ff2d55',
+    backgroundColor: '#68006dff',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 25,
