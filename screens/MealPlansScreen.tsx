@@ -122,17 +122,7 @@ const MealPlansScreen = () => {
         </View>
       </View>
 
-      <Text
-        style={{
-          fontSize: 26,
-          fontWeight: 'bold',
-          paddingHorizontal: 15,
-          color: '#333',
-          marginBottom: 15,
-        }}
-      >
-        Tasty Meal Plans
-      </Text>
+      <Text style={styles.mealPlanHeading}>Tasty Meal Plans</Text>
       {mealPlans?.map((plan: any, index: number) => (
         <TouchableOpacity
           onPress={() => handleMealPress(plan.name, plan.recipes)}
@@ -209,7 +199,7 @@ const styles = StyleSheet.create({
   recipesBadge: {
     position: 'absolute',
     top: 10,
-    right: 10,
+    right: 20,
     backgroundColor: '#68006dff',
     paddingVertical: 3,
     paddingHorizontal: 8,
@@ -258,5 +248,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  mealPlanHeading: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    paddingHorizontal: 15,
+    color: '#333',
+    marginBottom: 15,
   },
 });
