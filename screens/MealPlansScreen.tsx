@@ -24,6 +24,7 @@ const MealPlansScreen = () => {
             params: {
               apiKey: '3b743256e59f4613bc9580268e2a0b78',
               number: 20,
+              cuisine: 'Mediterranean',
               addRecipeInformation: true,
             },
           },
