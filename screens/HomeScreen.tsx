@@ -33,7 +33,7 @@ const HomeScreen = () => {
           {
             params: {
               apiKey: '3b743256e59f4613bc9580268e2a0b78',
-              cuisine: 'Italian',
+              cuisine: 'European',
               number: 10,
               addRecipeInformation: true,
             },
