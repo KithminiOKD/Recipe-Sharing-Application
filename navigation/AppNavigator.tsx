@@ -12,6 +12,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import { RouteProp } from '@react-navigation/native';
 import Icon from '@react-native-vector-icons/ionicons';
 import DishDetailScreen from '../screens/DishDetailScreen';
+import MealPlanDetailScreen from '../screens/MealPlanDetailScreen';
 
 type TabParamList = {
   Discover: undefined;
@@ -36,6 +37,7 @@ const DiscoverStackScreen = () => (
 const MealPlanStackScreen = () => (
   <MealPlanStack.Navigator screenOptions={{headerShown: false}}>
     <MealPlanStack.Screen name="MealPlans" component={MealPlansScreen} />
+    <MealPlanStack.Screen name="MealPlanDetail" component={MealPlanDetailScreen} />
   </MealPlanStack.Navigator>
 );
 
