@@ -13,6 +13,7 @@ import { RouteProp } from '@react-navigation/native';
 import Icon from '@react-native-vector-icons/ionicons';
 import DishDetailScreen from '../screens/DishDetailScreen';
 import MealPlanDetailScreen from '../screens/MealPlanDetailScreen';
+import LoginScreen from '../screens/LoginScreen';
 
 type TabParamList = {
   Discover: undefined;
@@ -50,6 +51,7 @@ const CommunityStackScreen = () => (
 const AuthStackScreen = () => (
   <AuthStack.Navigator screenOptions={{headerShown: false}}>
     <AuthStack.Screen name="Profile" component={ProfileScreen} />
+    <AuthStack.Screen name="Login" component={LoginScreen} />
   </AuthStack.Navigator>
 );
 
