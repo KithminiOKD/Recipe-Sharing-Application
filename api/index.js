@@ -43,11 +43,11 @@ app.post('/api/register', async (req, res) => {
     if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ message: 'Name email nd password are req' });
+        .json({ message: 'Name email nd password are required!' });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already registered' });
+      return res.status(400).json({ message: 'Email already registered!' });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword });
@@ -72,7 +72,7 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are req' });
+    return res.status(400).json({ message: 'Email and password are required!' });
   }
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password)))
@@ -104,7 +104,7 @@ const authenticateToken = (req, res, next) => {
       if (err.name == 'TokenExpiredError')
         return res
           .status(401)
-          .json({ message: 'Token expired, please login again' });
+          .json({ message: 'Token expired, please login again!' });
     }
     req.user = user;
     next();
@@ -121,10 +121,10 @@ app.post(
     if (!recipeName || !description) {
       return res
         .status(400)
-        .json({ message: 'Recipe name and description req' });
+        .json({ message: 'Recipe name and description required!' });
     }
     if (!req.file)
-      return res.status(400).json({ message: 'Image is required' });
+      return res.status(400).json({ message: 'Image is required!' });
 
     const post = new Post({
       userId: req.user.id,
@@ -173,7 +173,7 @@ app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
 app.post('/api/posts/:id/comments', authenticateToken, async (req, res) => {
   const { text } = req.body;
   if (!text)
-    return res.status(400).json({ message: 'Comment text is required' });
+    return res.status(400).json({ message: 'Comment text is required!' });
   try {
     const comment = new Comment({
       postId: req.params.id,
