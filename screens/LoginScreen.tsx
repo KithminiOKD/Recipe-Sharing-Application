@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   authButton: {
-    backgroundColor: '#ff2d55',
+    backgroundColor: '#59168b',
     paddingVertical: 12,
     borderRadius: 25,
     alignItems: 'center',

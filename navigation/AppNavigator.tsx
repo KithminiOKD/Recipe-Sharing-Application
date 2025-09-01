@@ -77,7 +77,7 @@ const BottomTabNavigator = () => {
             const iconName = getIconName(route.name, focused);
             return <Icon name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#68006dff',
+          tabBarActiveTintColor: '#59168b',
           tabBarInactiveTintColor: '#666',
           headerShown: false,
         };

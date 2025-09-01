@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 20,
-    backgroundColor: '#68006dff',
+    backgroundColor: '#59168b',
     paddingVertical: 3,
     paddingHorizontal: 8,
     borderRadius: 10,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   startButton: {
-    backgroundColor: '#68006dff',
+    backgroundColor: '#59168b',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 25,

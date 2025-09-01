@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 10,
-    color: '#68006dff',
+    color: '#59168b',
     paddingHorizontal: 15,
   },
   recipeCard: {

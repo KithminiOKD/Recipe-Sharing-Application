@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#68006dff',
+    color: '#59168b',
     marginBottom: 10,
   },
   ingredient: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   startButton: {
-    backgroundColor: '#68006dff',
+    backgroundColor: '#59168b',
     padding: 15,
     borderRadius: 25,
     margin: 20,

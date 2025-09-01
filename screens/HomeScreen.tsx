@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#68006dff',
+    color: '#59168b',
   },
   subtitle: {
     fontSize: 16,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    backgroundColor: '#68006dff',
+    backgroundColor: '#59168b',
     padding: 5,
     borderRadius: 15,
   },

@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     lineHeight:26
   },
   signInButton:{
-    backgroundColor:"#ff2d55",
+    backgroundColor:"#59168b",
     paddingVertical:12,
     paddingHorizontal:40,
     borderRadius:25,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     lineHeight:18
   },
   link:{
-    color:"#ff2d55",
+    color:"#59168b",
     fontWeight:"600"
   },
   profileText:{
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   logoutButton:{
-    backgroundColor:"#007AFF",
+    backgroundColor:"#c10007",
     paddingVertical:10,
     paddingHorizontal:30,
     borderRadius:20
