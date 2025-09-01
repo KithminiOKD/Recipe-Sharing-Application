@@ -205,7 +205,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  postButtonDisabled: { backgroundColor: '#ff6f81', opacity: 0.7 },
+  postButtonDisabled: {
+    backgroundColor: '#c27aff',
+    opacity: 0.7,
+  },
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
