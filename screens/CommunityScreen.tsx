@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   modalCancelButtonText: {
     fontSize: 16,
-    color: '#c10007',
+    color: '#007AFF',
   },
   postContainer: {
     marginVertical: 12,
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     color: '#59168b',
     marginVertical: 8,
   },
-  description: { fontSize: 15, color: '#666', lineHeight: 22 },
+  description: {fontSize: 15, color: '#666', lineHeight: 22},
   interaction: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -297,10 +297,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#eee',
   },
-  likeButton: { padding: 8 },
-  likeText: { fontSize: 15, color: '#59168b' },
-  commentButton: { padding: 8 },
-  commentText: { fontSize: 15, color: '#007AFF' },
+  likeButton: {padding: 8},
+  likeText: {fontSize: 15, color: '#59168b'},
+  commentButton: {padding: 8},
+  commentText: {fontSize: 15, color: '#007AFF'},
   loading: {
     flex: 1,
     justifyContent: 'center',
