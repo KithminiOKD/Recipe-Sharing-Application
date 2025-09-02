@@ -14,6 +14,8 @@ import Icon from '@react-native-vector-icons/ionicons';
 import DishDetailScreen from '../screens/DishDetailScreen';
 import MealPlanDetailScreen from '../screens/MealPlanDetailScreen';
 import LoginScreen from '../screens/LoginScreen';
+import AddPostScreen from '../screens/AddPostScreen';
+import CommentsScreen from '../screens/CommentsScreen';
 
 type TabParamList = {
   Discover: undefined;
@@ -45,6 +47,8 @@ const MealPlanStackScreen = () => (
 const CommunityStackScreen = () => (
   <CommunityStack.Navigator screenOptions={{headerShown: false}}>
     <CommunityStack.Screen name="Community" component={CommunityScreen} />
+    <CommunityStack.Screen name="AddPost" component={AddPostScreen} />
+    <CommunityStack.Screen name="Comment" component={CommentsScreen} />
   </CommunityStack.Navigator>
 );
 
