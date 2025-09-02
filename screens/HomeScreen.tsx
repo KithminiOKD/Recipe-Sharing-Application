@@ -33,7 +33,7 @@ const HomeScreen = () => {
           {
             params: {
               apiKey: '3b743256e59f4613bc9580268e2a0b78',
-              cuisine: 'European',
+              cuisine: 'indian',
               number: 10,
               addRecipeInformation: true,
             },
@@ -96,6 +96,28 @@ const HomeScreen = () => {
         numColumns={2}
         columnWrapperStyle={styles.row}
       />
+      <Pressable
+      onPress={() => navigation.navigate("Meal")}
+        style={{
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginLeft: 'auto',
+          position: 'absolute',
+          bottom: 35,
+          right: 25,
+          alignContent: 'center',
+          backgroundColor:"#c27aff"
+        }}>
+        <Icon
+          style={{textAlign: 'center'}}
+          name="add"
+          size={24}
+          color="white"
+        />
+      </Pressable>
     </View>
   );
 };
