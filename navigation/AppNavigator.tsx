@@ -16,6 +16,7 @@ import MealPlanDetailScreen from '../screens/MealPlanDetailScreen';
 import LoginScreen from '../screens/LoginScreen';
 import AddPostScreen from '../screens/AddPostScreen';
 import CommentsScreen from '../screens/CommentsScreen';
+import MealQueryScreen from '../screens/MealQueryScreen';
 
 type TabParamList = {
   Discover: undefined;
@@ -34,6 +35,7 @@ const DiscoverStackScreen = () => (
   <DiscoverStack.Navigator screenOptions={{headerShown: false}}>
     <DiscoverStack.Screen name="Home" component={HomeScreen} />
     <DiscoverStack.Screen name="Detail" component={DishDetailScreen} />
+    <DiscoverStack.Screen name="Meal" component={MealQueryScreen} />
   </DiscoverStack.Navigator>
 );
 
