@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
@@ -12,16 +13,16 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Configure multer storage for uploaded images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
   filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
 });
 const upload = multer({ storage });
 
+// Connect to MongoDB database
 mongoose
-  .connect(
-    'mongodb+srv://okdkithmini:okdkithmini@cluster0.m609url.mongodb.net/',
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('MongoDB Connected');
   })
@@ -29,14 +30,24 @@ mongoose
     console.log('Error connecting to mongodb', err);
   });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+//app.listen(3000, () => console.log('Server running on port 3000'));
 
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Import mongoose models
 const User = require('./models/user');
 const Post = require('./models/post');
 const Comment = require('./models/comment');
 
-const SECRET_KEY = 'q8nFv3!xRu7@pZwE#bC2$JtL9^dHkX5gVuY1*mZn';
+const SECRET_KEY = process.env.SECRET_KEY;
 
+/**
+ * @route   POST /api/register
+ * @desc    Register a new user (signup)
+ * @access  Public
+ */
 app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -69,6 +80,11 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /api/login
+ * @desc    Login a user
+ * @access  Public
+ */
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -91,6 +107,11 @@ app.post('/api/login', async (req, res) => {
   });
 });
 
+/**
+ * Middleware: authenticateToken
+ * @desc   Verifies JWT token and attaches user info to request
+ * @access Private
+ */
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   console.log('auth header', authHeader);
@@ -113,6 +134,11 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+/**
+ * @route   POST /api/posts
+ * @desc    Create a new post (with image upload)
+ * @access  Private
+ */
 app.post(
   '/api/posts',
   authenticateToken,
@@ -144,6 +170,11 @@ app.post(
   },
 );
 
+/**
+ * @route   GET /api/posts
+ * @desc    Get all posts (latest 20)
+ * @access  Public
+ */
 app.get('/api/posts', async (req, res) => {
   try {
     const posts = await Post.find()
@@ -157,6 +188,11 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /api/posts/:id/like
+ * @desc    Like a post (adds userId to likes array)
+ * @access  Private
+ */
 app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -172,6 +208,11 @@ app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /api/posts/:id/comments
+ * @desc    Add a comment to a post
+ * @access  Private
+ */
 app.post('/api/posts/:id/comments', authenticateToken, async (req, res) => {
   const { text } = req.body;
   if (!text)
@@ -194,6 +235,11 @@ app.post('/api/posts/:id/comments', authenticateToken, async (req, res) => {
   }
 });
 
+/**
+ * @route   GET /api/posts/:id/comments
+ * @desc    Get all comments for a post
+ * @access  Public
+ */
 app.get('/api/posts/:id/comments', async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.id })
@@ -206,6 +252,11 @@ app.get('/api/posts/:id/comments', async (req, res) => {
   }
 });
 
+/**
+ * @route   GET /api/posts/:id
+ * @desc    Get a single post with comments
+ * @access  Public
+ */
 app.get('/api/posts/:id', async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
