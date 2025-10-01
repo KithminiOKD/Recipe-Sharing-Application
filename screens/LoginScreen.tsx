@@ -20,6 +20,7 @@ const LoginScreen = () => {
   const [isLogin, setIsLogin] = useState(true);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   const handleAuth = async () => {
     const url = isLogin ? '/api/login' : '/api/register';
     const body = isLogin ? { email, password } : { name, email, password };
