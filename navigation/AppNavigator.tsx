@@ -17,6 +17,7 @@ import LoginScreen from '../screens/LoginScreen';
 import AddPostScreen from '../screens/AddPostScreen';
 import CommentsScreen from '../screens/CommentsScreen';
 import MealQueryScreen from '../screens/MealQueryScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 type TabParamList = {
   Discover: undefined;
@@ -58,6 +59,7 @@ const AuthStackScreen = () => (
   <AuthStack.Navigator screenOptions={{headerShown: false}}>
     <AuthStack.Screen name="Profile" component={ProfileScreen} />
     <AuthStack.Screen name="Login" component={LoginScreen} />
+    <AuthStack.Screen name="EditProfile" component={EditProfileScreen} />
   </AuthStack.Navigator>
 );
 
