@@ -21,23 +21,48 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const handleAuth = async () => {
+//   const handleAuth = async () => {
+//     const url = isLogin ? '/api/login' : '/api/register';
+//     const body = isLogin ? { email, password } : { name, email, password };
+//
+//     const response = await axios.post(`http://localhost:3000${url}`, body, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
+//
+//     const authData = { token: response.data.token, user: response.data.user };
+//
+//     dispatch(setUser(authData));
+//
+//     await AsyncStorage.setItem('auth', JSON.stringify(authData));
+//     navigation.navigate('Profile');
+//   };
+const handleAuth = async () => {
+  try {
     const url = isLogin ? '/api/login' : '/api/register';
     const body = isLogin ? { email, password } : { name, email, password };
 
-    const response = await axios.post(`http://localhost:3000${url}`, body, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
 
-    const authData = { token: response.data.token, user: response.data.user };
+    // Use your server's local IP address and port
+    const BASE_URL = 'http://192.168.8.123:3000'; // <-- Replace YOUR_LOCAL_IP with your computer's local IP address
+    // Example: const BASE_URL = 'http://192.168.1.100:3000'
 
-    dispatch(setUser(authData));
+    const response = await axios.post(`${BASE_URL}${url}`, body);
 
-    await AsyncStorage.setItem('auth', JSON.stringify(authData));
-    navigation.navigate('Profile');
-  };
+    if (response.data?.token && response.data?.user) {
+      const authData = { token: response.data.token, user: response.data.user };
+      await AsyncStorage.setItem('auth', JSON.stringify(authData));
+      dispatch(setUser(authData));
+      navigation.navigate('Profile');
+    } else {
+      Alert.alert('Error', 'Invalid response from server');
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || 'Something went wrong';
+    Alert.alert('Error', message);
+  }
+};
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
