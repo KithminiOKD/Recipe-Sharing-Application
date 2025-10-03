@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Icon from '@react-native-vector-icons/ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 
 const HomeScreen = () => {
   interface Recipe {
@@ -59,6 +60,14 @@ const HomeScreen = () => {
     fetchRecipes();
   }, []);
 
+  if (loading) {
+    return (
+      <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fff'}}>
+        <Text style={{fontSize:18, color:'#59168b'}}>Loading recipes...</Text>
+      </View>
+    );
+  }
+
   const renderRecipeCard = ({ item }: { item: Recipe }) => (
     <TouchableOpacity
       onPress={() =>
@@ -68,53 +77,47 @@ const HomeScreen = () => {
           image: item?.image,
         })
       }
-      activeOpacity={0.8}
+      activeOpacity={0.9}
       style={styles.card}
     >
-      <Image source={{ uri: item.image }} style={styles.image} />
+      <View style={styles.cardImageWrapper}>
+        <Image source={{ uri: item.image }} style={styles.image} />
+        <View style={styles.typeBadge}>
+          <Text style={styles.typeText}>{item.type}</Text>
+        </View>
+        <TouchableOpacity style={styles.bookmarkIcon}>
+          <Icon name="bookmark-outline" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.details}>
         {item.readyInMinutes} min • {Math.round(item.healthScore)}%
       </Text>
-      <TouchableOpacity style={styles.bookmark}>
-        <Text style={styles.bookmarkText}>Bookmark</Text>
-      </TouchableOpacity>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <LinearGradient colors={["#c27aff", "#fff"]} style={styles.headerGradient}>
         <Text style={styles.welcome}>Welcome to Tasty App</Text>
         <Text style={styles.subtitle}>Here's what we recommend for you!</Text>
-      </View>
-
+      </LinearGradient>
       <FlatList
         data={recipes}
         renderItem={renderRecipeCard}
         keyExtractor={item => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.row}
+        contentContainerStyle={{paddingBottom: 120}}
       />
       <Pressable
-      onPress={() => navigation.navigate("Meal")}
-        style={{
-          width: 60,
-          height: 60,
-          borderRadius: 30,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginLeft: 'auto',
-          position: 'absolute',
-          bottom: 35,
-          right: 25,
-          alignContent: 'center',
-          backgroundColor:"#c27aff"
-        }}>
+        onPress={() => navigation.navigate("Meal")}
+        style={styles.fab}
+      >
         <Icon
           style={{textAlign: 'center'}}
           name="add"
-          size={24}
+          size={28}
           color="white"
         />
       </Pressable>
@@ -128,70 +131,107 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: 55,
   },
-  header: {
-    padding: 20,
+  headerGradient: {
+    paddingTop: 55,
+    paddingBottom: 30,
     alignItems: 'center',
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    marginBottom: 10,
   },
+  header: { display: 'none' }, // Hide old header
   welcome: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#59168b',
+    marginBottom: 4,
+    letterSpacing: 0.5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
-    marginTop: 5,
+    color: '#59168b',
+    marginTop: 2,
   },
   card: {
     flex: 1,
     margin: 10,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 18,
     overflow: 'hidden',
-    elevation: 4,
+    elevation: 6,
+    shadowColor: '#c27aff',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    minHeight: 240,
+  },
+  cardImageWrapper: {
+    position: 'relative',
   },
   image: {
     width: '100%',
-    height: 150,
+    height: 140,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+  },
+  typeBadge: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    backgroundColor: '#007AFF',
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    zIndex: 2,
   },
   typeText: {
     color: 'white',
     fontSize: 12,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+  },
+  bookmarkIcon: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: '#59168b',
+    padding: 6,
+    borderRadius: 16,
+    zIndex: 2,
+    elevation: 2,
   },
   row: {
     justifyContent: 'space-between',
   },
-  typeBadge: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    backgroundColor: '#007AFF',
-    padding: 5,
-    borderRadius: 5,
-  },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    padding: 10,
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    color: '#222',
   },
   details: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#666',
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+    paddingTop: 2,
   },
-  bookmark: {
+  fab: {
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: '#59168b',
-    padding: 5,
-    borderRadius: 15,
-  },
-  bookmarkText: {
-    color: '#ffffff',
-    fontSize: 12,
+    bottom: 35,
+    right: 25,
+    backgroundColor: '#c27aff',
+    elevation: 8,
+    shadowColor: '#c27aff',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
   },
 });
