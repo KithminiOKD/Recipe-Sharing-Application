@@ -14,6 +14,8 @@ import { useAppSelector } from '../store';
 import Modal from 'react-native-modal';
 import axios from 'axios';
 import moment from 'moment';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const CommunityScreen = () => {
   const navigation = useNavigation();
@@ -23,10 +25,6 @@ const CommunityScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleAddPost = () => {
-    if (!token) {
-      setModalVisible(true);
-      return;
-    }
     navigation.navigate('AddPost');
   };
 
@@ -83,23 +81,32 @@ const CommunityScreen = () => {
         style={styles.postImage}
       />
       <View style={styles.postInfo}>
-        <Text style={styles.username}>{item?.userId.name}</Text>
-        <Text style={styles.time}>{moment(item?.createdAt).fromNow()}</Text>
+        <View style={styles.userRow}>
+          <Image
+            source={{ uri: item?.userId.avatarUrl || 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
+            style={styles.avatar}
+          />
+          <View style={{flex:1}}>
+            <Text style={styles.username}>{item?.userId.name}</Text>
+            <Text style={styles.time}>{moment(item?.createdAt).fromNow()}</Text>
+          </View>
+        </View>
         <Text style={styles.recipeName}>{item?.recipeName}</Text>
         <Text style={styles.description}>{item?.description}</Text>
-
         <View style={styles.interaction}>
           <TouchableOpacity
             onPress={() => handleLike(item._id)}
-            style={styles.likeButton}
+            style={styles.iconButton}
           >
-            <Text style={styles.likeText}>{item.likes.length} ❤️</Text>
+            <Icon name="heart-outline" size={20} color="#59168b" />
+            <Text style={styles.likeText}>{item.likes.length}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleComment(item._id)}
-            style={styles.commentButton}
+            style={styles.iconButton}
           >
-            <Text style={styles.commentText}>{item.comments.length} 💬</Text>
+            <Icon name="chatbubble-ellipses-outline" size={20} color="#007AFF" />
+            <Text style={styles.commentText}>{item.comments.length}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -114,13 +121,10 @@ const CommunityScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <LinearGradient colors={["#c27aff", "#fff"]} style={styles.headerGradient}>
+        <Text style={styles.headerText}>Our Community</Text>
+      </LinearGradient>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Our Community</Text>
-          <TouchableOpacity onPress={handleAddPost} style={styles.plusButton}>
-            <Text style={styles.plusText}>+</Text>
-          </TouchableOpacity>
-        </View>
         {posts.length == 0 ? (
           <View style={styles.noPostsContainer}>
             <Image
@@ -144,8 +148,15 @@ const CommunityScreen = () => {
             onRefresh={fetchPosts}
           />
         )}
+        <TouchableOpacity style={styles.fab} onPress={handleAddPost}>
+          <Icon name="add" size={28} color="white" />
+        </TouchableOpacity>
       </View>
-
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#59168b" />
+        </View>
+      )}
       <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}
@@ -154,15 +165,15 @@ const CommunityScreen = () => {
         onSwipeComplete={() => setModalVisible(false)}
       >
         <View style={styles.modalContent}>
+          <Icon name="lock-closed-outline" size={40} color="#59168b" style={{marginBottom:10}} />
           <Text style={styles.modalTitle}>Please Log In</Text>
           <Text style={styles.modalText}>
-            You need to be logged in to like a post or create a new post
+            You need to be logged in to like or comment on a post.
           </Text>
-          <TouchableOpacity style={styles.modalButton}>
+          <TouchableOpacity style={styles.modalButton} onPress={() => { setModalVisible(false); navigation.navigate('Profile'); }}>
             <Text style={styles.modalButtonText}>Go To Profile</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.modalCancelButton}>
+          <TouchableOpacity style={styles.modalCancelButton} onPress={() => setModalVisible(false)}>
             <Text style={styles.modalCancelButtonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -178,37 +189,132 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
+  headerGradient: {
+    paddingTop: 55,
+    paddingBottom: 30,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    elevation: 4,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    marginBottom: 10,
   },
   headerText: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#59168b',
+    letterSpacing: 0.5,
   },
-  plusButton: {
+  container: {
+    flex: 1,
+    paddingHorizontal: 0,
+    backgroundColor: 'transparent',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 30,
+    right: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: '#59168b',
-    width: 45,
-    height: 45,
-    borderRadius: 22.5,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 3,
+    elevation: 8,
+    shadowColor: '#59168b',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    zIndex: 10,
   },
-  plusText: {
-    color: 'white',
-    fontSize: 26,
+  postContainer: {
+    marginVertical: 12,
+    marginHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: 18,
+    elevation: 6,
+    overflow: 'hidden',
+    shadowColor: '#c27aff',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+  },
+  postImage: {
+    width: '100%',
+    height: 220,
+    resizeMode: 'cover',
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+  },
+  postInfo: {
+    padding: 15,
+  },
+  userRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  avatar: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    marginRight: 10,
+    backgroundColor: '#eee',
+  },
+  username: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  time: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 2,
+  },
+  recipeName: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#59168b',
+    marginVertical: 8,
+  },
+  description: {fontSize: 15, color: '#666', lineHeight: 22},
+  interaction: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginTop: 12,
+    paddingVertical: 5,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  iconButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 24,
+    paddingVertical: 4,
+  },
+  likeText: {fontSize: 15, color: '#59168b', marginLeft: 5},
+  commentText: {fontSize: 15, color: '#007AFF', marginLeft: 5},
+  noPostsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 60,
+  },
+  noPostsImage: {
+    width: 90,
+    height: 90,
+    marginBottom: 18,
+    opacity: 0.7,
+  },
+  noPostsText: {
+    fontSize: 18,
+    color: '#aaa',
+    fontWeight: '600',
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
   },
   modal: {
     justifyContent: 'flex-end',
@@ -216,20 +322,20 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: 24,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 18,
+    color: '#59168b',
     textAlign: 'center',
     marginBottom: 10,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   modalText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#333',
     textAlign: 'center',
     marginBottom: 20,
@@ -252,57 +358,5 @@ const styles = StyleSheet.create({
   modalCancelButtonText: {
     fontSize: 16,
     color: '#007AFF',
-  },
-  postContainer: {
-    marginVertical: 12,
-    backgroundColor: 'white',
-
-    elevation: 6,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  postImage: {
-    width: '100%',
-    height: 250,
-    resizeMode: 'cover',
-  },
-  postInfo: {
-    padding: 15,
-  },
-  username: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-  },
-  time: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 3,
-  },
-  recipeName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#59168b',
-    marginVertical: 8,
-  },
-  description: {fontSize: 15, color: '#666', lineHeight: 22},
-  interaction: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12,
-    paddingVertical: 5,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-  },
-  likeButton: {padding: 8},
-  likeText: {fontSize: 15, color: '#59168b'},
-  commentButton: {padding: 8},
-  commentText: {fontSize: 15, color: '#007AFF'},
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
   },
 });
