@@ -17,6 +17,8 @@ import Modal from 'react-native-modal';
 import { Bar } from 'react-native-progress';
 import axios from 'axios';
 
+const API_BASE_URL = 'http://192.168.8.123:3000'; // <-- Replace with your computer's local IP address
+
 const AddPostScreen = () => {
   const { token } = useAppSelector(state => state.auth);
   const navigation = useNavigation();
@@ -56,7 +58,7 @@ const AddPostScreen = () => {
     } as any);
 
     try {
-      await axios.post('http://localhost:3000/api/posts', formData, {
+      await axios.post(`${API_BASE_URL}/api/posts`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -70,11 +72,16 @@ const AddPostScreen = () => {
       });
 
       setUploadingProgress(100);
-
       await new Promise(resolve => setTimeout(resolve, 1000));
-
       navigation.goBack();
-    } catch (error) {
+    } catch (error: any) {
+      setUploading(false);
+      setUploadingProgress(0);
+      let message = 'Failed to create post.';
+      if (error.response && error.response.data && error.response.data.message) {
+        message = error.response.data.message;
+      }
+      Alert.alert('Error', message);
       console.log('Error', error);
     }
   };
