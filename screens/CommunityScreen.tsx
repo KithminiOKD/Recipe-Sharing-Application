@@ -15,7 +15,9 @@ import Modal from 'react-native-modal';
 import axios from 'axios';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from '@react-native-vector-icons/ionicons';
+
+const API_BASE_URL = 'http://192.168.8.123:3000'; // <-- Replace with your computer's local IP address
 
 const CommunityScreen = () => {
   const navigation = useNavigation();
@@ -25,6 +27,10 @@ const CommunityScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleAddPost = () => {
+      if (!token) {
+            setModalVisible(true);
+            return;
+          }
     navigation.navigate('AddPost');
   };
 
@@ -39,8 +45,9 @@ const CommunityScreen = () => {
   }, []);
 
   const fetchPosts = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3000/api/posts');
+      const response = await axios.get(`${API_BASE_URL}/api/posts`);
       setPosts(response.data);
     } catch (error) {
       console.log('Error', error);
@@ -60,7 +67,7 @@ const CommunityScreen = () => {
     }
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/posts/${postId}/like`,
+        `${API_BASE_URL}/api/posts/${postId}/like`,
         {},
         {
           headers: {
@@ -77,7 +84,7 @@ const CommunityScreen = () => {
   const renderPost = ({ item }: { item: any }) => (
     <View style={styles.postContainer}>
       <Image
-        source={{ uri: `http://localhost:3000${item.imageUrl}` }}
+        source={{ uri: `${API_BASE_URL}${item.imageUrl}` }}
         style={styles.postImage}
       />
       <View style={styles.postInfo}>
@@ -149,7 +156,12 @@ const CommunityScreen = () => {
           />
         )}
         <TouchableOpacity style={styles.fab} onPress={handleAddPost}>
-          <Icon name="add" size={28} color="white" />
+          <Icon
+                    style={{textAlign: 'center'}}
+                    name="add"
+                    size={28}
+                    color="white"
+                  />
         </TouchableOpacity>
       </View>
       {loading && (
