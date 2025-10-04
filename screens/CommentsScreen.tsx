@@ -15,6 +15,8 @@ import { useAppSelector } from '../store';
 import axios from 'axios';
 import moment from 'moment';
 
+const API_BASE_URL = 'http://192.168.8.123:3000'; // <-- Replace with your computer's local IP address
+
 const CommentsScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation();
@@ -35,13 +37,13 @@ const CommentsScreen = () => {
   const fetchPostAndComments = async () => {
     try {
       const postResponse = await axios.get(
-        `http://localhost:3000/api/posts/${postId}`,
+        `${API_BASE_URL}/api/posts/${postId}`,
       );
       console.log('Response', postResponse);
       setPost(postResponse.data);
 
       const commentsResponse = await axios.get(
-        `http://localhost:3000/api/posts/${postId}/comments`,
+        `${API_BASE_URL}/api/posts/${postId}/comments`,
       );
       setComments(commentsResponse.data);
     } catch (error) {
@@ -66,7 +68,7 @@ const CommentsScreen = () => {
     if (newComment.trim()) {
       try {
         await axios.post(
-          `http://localhost:3000/api/posts/${postId}/comments`,
+          `${API_BASE_URL}/api/posts/${postId}/comments`,
           {
             text: newComment,
           },
@@ -90,7 +92,7 @@ const CommentsScreen = () => {
         {/* Post Section */}
         <View style={styles.postContainer}>
           <Image
-            source={{ uri: `http://localhost:3000${post.imageUrl}` }}
+            source={{ uri: `${API_BASE_URL}${post.imageUrl}` }}
             style={styles.postImage}
           />
           <View style={styles.postInfo}>
